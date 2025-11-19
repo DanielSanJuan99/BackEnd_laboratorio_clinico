@@ -53,6 +53,7 @@ public class UsuarioService {
         return usuarioGuardado;
     }
 
+    //Eliminar usuario
     public void eliminarUsuario(Integer id) {
         logger.info("Eliminando usuario con ID: {}", id);
         if (!usuarioRepository.existsById(id)) {

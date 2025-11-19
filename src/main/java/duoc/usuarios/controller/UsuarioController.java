@@ -2,7 +2,6 @@ package duoc.usuarios.controller;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,14 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import duoc.usuarios.service.UsuarioService;
 import jakarta.validation.Valid;
 import duoc.usuarios.entity.Usuario;
 import duoc.usuarios.model.UsuarioModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PutMapping;
-
 
 @Slf4j
 @RestController
@@ -47,8 +44,7 @@ public class UsuarioController {
         usuario.setApellido(usuarioModel.getApellido());
         usuario.setEmail(usuarioModel.getEmail());
         usuario.setPassword(usuarioModel.getPassword());
-        usuario.setRol(usuarioModel.getRol().getId());
-        usuario.setLaboratorio(usuarioModel.getLaboratorio().getId());
+        //TODO: FALTA MODIFICAR PARA ROL Y LABORATORIO
         Usuario usuarioGuardado = usuarioService.guardarUsuario(usuario);
         log.info("Usuario creado con ID: {}", usuarioGuardado.getId());
         return ResponseEntity.ok(usuarioGuardado);
@@ -63,8 +59,7 @@ public class UsuarioController {
             usuario.setApellido(usuarioModel.getApellido());
             usuario.setEmail(usuarioModel.getEmail());
             usuario.setPassword(usuarioModel.getPassword());
-            usuario.setRol(usuarioModel.getRol().getId());
-            usuario.setLaboratorio(usuarioModel.getLaboratorio().getId());
+            //TODO: FALTA MODIFICAR PARA ROL Y LABORATORIO
             Usuario usuarioActualizado = usuarioService.guardarUsuario(usuario);
             log.info("Usuario actualizado con ID: {}", usuarioActualizado.getId());
             return ResponseEntity.ok(usuarioActualizado);

@@ -1,7 +1,7 @@
 package duoc.usuarios.model;
 
-import duoc.usuarios.entity.Rol;
-import duoc.usuarios.entity.Laboratorio;
+// import duoc.usuarios.entity.Rol;
+// import duoc.usuarios.entity.Laboratorio;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 
+// Modificar para construir el modelo de datos con validaciones
 @Data
 public class UsuarioModel {
     @Id
@@ -36,9 +37,9 @@ public class UsuarioModel {
 
     // Relación con Rol
     @NotNull(message = "El rol no puede ser nulo")
-    private Rol rol;
+    private Integer rolId;
 
     // Relación con Laboratorio
     @NotNull(message = "El laboratorio no puede ser nulo")
-    private Laboratorio laboratorio;
+    private Integer laboratorioId;
 }

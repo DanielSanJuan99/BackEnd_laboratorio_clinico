@@ -34,7 +34,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOriginPattern("http://localhost:4200");
+        config.addAllowedOriginPattern("http://localhost:8080");
         config.addAllowedOriginPattern("http://duoc.cl");
         config.addAllowedHeader("*");
         config.addAllowedMethod("GET");
