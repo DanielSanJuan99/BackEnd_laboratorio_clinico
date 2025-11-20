@@ -19,11 +19,11 @@ public class Usuario {
     private String email;
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Rol.class)
     @JoinColumn(name = "roles_id")
     private Rol rol;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Laboratorio.class)
     @JoinColumn(name = "laboratorios_id")
     private Laboratorio laboratorio;
 }

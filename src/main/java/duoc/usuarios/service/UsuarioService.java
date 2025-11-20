@@ -9,8 +9,13 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import duoc.usuarios.repository.RolRepository;
+import duoc.usuarios.repository.LaboratorioRepository;
 import duoc.usuarios.repository.UsuarioRepository;
+import duoc.usuarios.entity.Laboratorio;
+import duoc.usuarios.entity.Rol;
 import duoc.usuarios.entity.Usuario;
+import duoc.usuarios.model.UsuarioModel;
 
 @Service
 public class UsuarioService {
@@ -19,6 +24,12 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private RolRepository rolRepository;
+
+    @Autowired
+    private LaboratorioRepository laboratorioRepository;
 
     //Obtener todos los usuarios
     public List<Usuario> listarUsuarios() {
@@ -46,10 +57,35 @@ public class UsuarioService {
     }
 
     //Guardar nuevo usuario
-    public Usuario guardarUsuario(Usuario usuario) {
-        logger.info("Guardando nuevo usuario: {}", usuario.getNombre(), " ", usuario.getApellido(), " - ", usuario.getEmail());
+    public Usuario guardarUsuario(Integer id, UsuarioModel usuarioModel) {
+        Usuario usuario = Optional.ofNullable(id)
+            .flatMap(usuarioRepository::findById)
+            .orElse(new Usuario());
+
+        usuario.setNombre(usuarioModel.getNombre());
+        usuario.setApellido(usuarioModel.getApellido());
+        usuario.setEmail(usuarioModel.getEmail());
+        usuario.setPassword(usuarioModel.getPassword());
+
+        if (usuarioModel.getRolId() != null) {
+            Rol rol = rolRepository.findById(usuarioModel.getRolId())
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+            usuario.setRol(rol);
+        }
+
+        if (usuarioModel.getLaboratorioId() != null) {
+            Laboratorio lab = laboratorioRepository.findById(usuarioModel.getLaboratorioId())
+                .orElseThrow(() -> new RuntimeException("Laboratorio no encontrado"));
+            usuario.setLaboratorio(lab);
+        }
+
+        if (usuario.getId() == null) {
+            logger.info("Creando nuevo usuario: {}", usuario.getNombre(), " ", usuario.getApellido(), " - ", usuario.getEmail());
+        } else {
+            logger.info("Actualizando usuario con ID: {}", usuario.getId());
+        }
+        
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
-        logger.info("Usuario guardado con ID: {}", usuarioGuardado.getId());
         return usuarioGuardado;
     }
 

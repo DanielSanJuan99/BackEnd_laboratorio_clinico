@@ -4,13 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import duoc.usuarios.service.UsuarioService;
 import jakarta.validation.Valid;
 import duoc.usuarios.entity.Usuario;
@@ -39,34 +33,16 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Usuario> crearUsusario(@Valid @RequestBody UsuarioModel usuarioModel) {
-        Usuario usuario = new Usuario();
-        usuario.setNombre(usuarioModel.getNombre());
-        usuario.setApellido(usuarioModel.getApellido());
-        usuario.setEmail(usuarioModel.getEmail());
-        usuario.setPassword(usuarioModel.getPassword());
-        //TODO: FALTA MODIFICAR PARA ROL Y LABORATORIO
-        Usuario usuarioGuardado = usuarioService.guardarUsuario(usuario);
+        Usuario usuarioGuardado = usuarioService.guardarUsuario(null, usuarioModel);
         log.info("Usuario creado con ID: {}", usuarioGuardado.getId());
         return ResponseEntity.ok(usuarioGuardado);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Integer id, @Valid @RequestBody UsuarioModel usuarioModel) {
-        Optional<Usuario> usuarioExistente = usuarioService.obtenerUsuarioPorId(id);
-        if (usuarioExistente.isPresent()) {
-            Usuario usuario = usuarioExistente.get();
-            usuario.setNombre(usuarioModel.getNombre());
-            usuario.setApellido(usuarioModel.getApellido());
-            usuario.setEmail(usuarioModel.getEmail());
-            usuario.setPassword(usuarioModel.getPassword());
-            //TODO: FALTA MODIFICAR PARA ROL Y LABORATORIO
-            Usuario usuarioActualizado = usuarioService.guardarUsuario(usuario);
+            Usuario usuarioActualizado = usuarioService.guardarUsuario(id, usuarioModel);
             log.info("Usuario actualizado con ID: {}", usuarioActualizado.getId());
             return ResponseEntity.ok(usuarioActualizado);
-        } else {
-            log.warn("Usuario con ID: {} no encontrado para actualización", id);
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @DeleteMapping("/{id}")
