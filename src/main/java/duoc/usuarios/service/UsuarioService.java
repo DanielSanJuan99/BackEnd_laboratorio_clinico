@@ -2,6 +2,7 @@ package duoc.usuarios.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,9 @@ public class UsuarioService {
 
     @Autowired
     private LaboratorioRepository laboratorioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Obtener todos los usuarios
     public List<Usuario> listarUsuarios() {
@@ -65,7 +69,25 @@ public class UsuarioService {
         usuario.setNombre(usuarioModel.getNombre());
         usuario.setApellido(usuarioModel.getApellido());
         usuario.setEmail(usuarioModel.getEmail());
-        usuario.setPassword(usuarioModel.getPassword());
+
+        String passNueva = usuarioModel.getPassword();
+
+        if (passNueva != null && !passNueva.isBlank()) {
+            String passwordEncriptada = passwordEncoder.encode(passNueva);
+            usuario.setPassword(passwordEncriptada);
+
+        } else {
+            if (usuario.getId() != null) {
+                // Mantener la contraseña existente si no se proporciona una nueva
+                Usuario usuarioExistente = usuarioRepository.findById(usuario.getId()).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                usuario.setPassword(usuarioExistente.getPassword());
+            }
+        }
+
+        if (usuarioModel.getPassword() != null && !usuarioModel.getPassword().isEmpty()) {
+            String passwordEncriptada = passwordEncoder.encode(usuarioModel.getPassword());
+            usuario.setPassword(passwordEncriptada);
+        }
 
         if (usuarioModel.getRolId() != null) {
             Rol rol = rolRepository.findById(usuarioModel.getRolId())

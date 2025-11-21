@@ -21,13 +21,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http            
+            .csrf(csrf -> csrf.disable())
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
             )
-            .httpBasic(Customizer.withDefaults());
+            .httpBasic(Customizer.withDefaults())
+            .sessionManagement(session -> session
+                .maximumSessions(1)                     // Máximo 1 sesión por usuario
+                .maxSessionsPreventsLogin(false)        // Si hay otra sesión, invalida la anterior
+            );
         return http.build();
     }
 
