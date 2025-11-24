@@ -9,6 +9,8 @@ import duoc.model.LaboratorioModel;
 import duoc.service.LaboratorioService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/laboratorios")
@@ -21,6 +23,12 @@ public class LaboratorioController {
         List<Laboratorio> laboratorios = laboratorioService.listarLaboratorios();
         return ResponseEntity.ok(laboratorios);
     }
+
+    @GetMapping("/{id}")
+    public Optional<Laboratorio> obtenerLaboratorioPorId(@PathVariable Long id) {
+        return laboratorioService.obtenerLaboratorioPorId(id);
+    }
+    
 
     @PostMapping
     public ResponseEntity<Laboratorio> crearLaboratorio(@Valid @RequestBody LaboratorioModel laboratorioModel) {
