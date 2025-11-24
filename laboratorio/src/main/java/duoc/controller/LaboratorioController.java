@@ -1,0 +1,39 @@
+package duoc.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import duoc.entity.Laboratorio;
+import duoc.model.LaboratorioModel;
+import duoc.service.LaboratorioService;
+import jakarta.validation.Valid;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/laboratorios")
+public class LaboratorioController {
+    @Autowired
+    private LaboratorioService laboratorioService;
+
+    @GetMapping
+    public ResponseEntity<List<Laboratorio>> listarLaboratorios() {
+        List<Laboratorio> laboratorios = laboratorioService.listarLaboratorios();
+        return ResponseEntity.ok(laboratorios);
+    }
+
+    @PostMapping
+    public ResponseEntity<Laboratorio> crearLaboratorio(@Valid @RequestBody LaboratorioModel laboratorioModel) {
+        Laboratorio laboratorioGuardado = laboratorioService.guardarLaboratorio(laboratorioModel);
+        return ResponseEntity.ok(laboratorioGuardado);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Laboratorio> actualizarLaboratorio(@PathVariable Long id, @RequestBody LaboratorioModel laboratorioModel) {
+        Laboratorio laboratorioActualizado = laboratorioService.actualizarLaboratorio(id, laboratorioModel);
+        if (laboratorioActualizado != null) {
+            return ResponseEntity.ok(laboratorioActualizado);
+        }
+        return ResponseEntity.notFound().build();
+    }
+}
