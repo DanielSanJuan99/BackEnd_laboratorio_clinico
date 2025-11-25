@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # --- Microservicio de Usuarios ---
+  microservicio-usuario:
+    build: ./usuario
+    container_name: api-usuarios
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./usuario/WALLET:/app/wallet
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@laboratoriofs3_high?TNS_ADMIN=/app/wallet
+      - SPRING_DATASOURCE_USERNAME=ADMIN
+      - SPRING_DATASOURCE_PASSWORD=Drkarmy3502+
+
+  # --- Microservicio de Laboratorio ---
+  microservicio-laboratorio:
+    build: ./laboratorio
+    container_name: api-laboratorios
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./laboratorio/WALLET:/app/wallet
+    environment:
+      - SERVER_PORT=8081
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@laboratoriofs3_high?TNS_ADMIN=/app/wallet
+      - SPRING_DATASOURCE_USERNAME=ADMIN
+      - SPRING_DATASOURCE_PASSWORD=Drkarmy3502+
