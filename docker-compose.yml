@@ -11,9 +11,9 @@ services:
       - ./usuario/WALLET:/app/wallet
     environment:
       - SERVER_PORT=8080
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@alias_de_tu_tnsnames?TNS_ADMIN=/app/wallet
-      - SPRING_DATASOURCE_USERNAME=TU_USUARIO_BD
-      - SPRING_DATASOURCE_PASSWORD=TU_PASSWORD_BD
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@laboratoriofs3_high?TNS_ADMIN=/app/wallet
+      - SPRING_DATASOURCE_USERNAME=ADMIN
+      - SPRING_DATASOURCE_PASSWORD=Drkarmy3502+
 
   # --- Microservicio de Laboratorio ---
   microservicio-laboratorio:
@@ -25,6 +25,6 @@ services:
       - ./laboratorio/WALLET:/app/wallet
     environment:
       - SERVER_PORT=8081
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@alias_de_tu_tnsnames?TNS_ADMIN=/app/wallet
-      - SPRING_DATASOURCE_USERNAME=TU_USUARIO_BD
-      - SPRING_DATASOURCE_PASSWORD=TU_PASSWORD_BD
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@laboratoriofs3_high?TNS_ADMIN=/app/wallet
+      - SPRING_DATASOURCE_USERNAME=ADMIN
+      - SPRING_DATASOURCE_PASSWORD=Drkarmy3502+
