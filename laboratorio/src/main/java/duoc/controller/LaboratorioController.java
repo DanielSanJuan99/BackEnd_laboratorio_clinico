@@ -8,12 +8,15 @@ import duoc.entity.Laboratorio;
 import duoc.model.LaboratorioModel;
 import duoc.service.LaboratorioService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 import java.util.Optional;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/api/laboratorios")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LaboratorioController {
     @Autowired
     private LaboratorioService laboratorioService;
