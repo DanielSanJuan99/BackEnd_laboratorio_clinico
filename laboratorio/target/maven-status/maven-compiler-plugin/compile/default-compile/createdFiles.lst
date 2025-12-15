@@ -1,0 +1,9 @@
+duoc\service\LaboratorioService.class
+duoc\model\LaboratorioModel.class
+duoc\config\SecurityConfig.class
+duoc\repository\ConvenioRepository.class
+duoc\repository\LaboratorioRepository.class
+duoc\entity\Laboratorio.class
+duoc\entity\Convenio.class
+duoc\controller\LaboratorioController.class
+duoc\LaboratorioApplication.class
