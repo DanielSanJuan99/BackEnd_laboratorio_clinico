@@ -6,7 +6,6 @@ import duoc.model.LaboratorioModel;
 import duoc.repository.LaboratorioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +34,6 @@ public class LaboratorioService {
 
         // Mapeo de la Relación (Asignación)
         if (modelo.getConvenioId() != null) {
-            // Usamos el truco de crear la instancia temporal con el ID
             Convenio convenio = new Convenio();
             convenio.setId(modelo.getConvenioId());
             laboratorio.setConvenio(convenio);
@@ -63,5 +61,12 @@ public class LaboratorioService {
             return laboratorioRepository.save(laboratorio);
         }
         return null;
+    }
+
+    public void eliminarLaboratorio(Long id) {
+        if (!laboratorioRepository.existsById(id)) {
+            throw new IllegalArgumentException("Laboratorio con ID " + id + " no existe.");
+        }
+        laboratorioRepository.deleteById(id);
     }
 }
