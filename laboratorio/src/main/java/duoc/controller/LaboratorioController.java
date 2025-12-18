@@ -47,4 +47,15 @@ public class LaboratorioController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarLaboratorio(@PathVariable Long id) {
+        try {
+            laboratorioService.eliminarLaboratorio(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            log.error("Error al eliminar laboratorio: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
