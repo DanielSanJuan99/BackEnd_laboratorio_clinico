@@ -5,4 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TipoExamenRespository extends JpaRepository<TipoExamen, Long> {}
+public interface TipoExamenRepository extends JpaRepository<TipoExamen, Long> {}
