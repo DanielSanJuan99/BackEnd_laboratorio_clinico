@@ -28,3 +28,17 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@laboratoriofs3_high?TNS_ADMIN=/app/wallet
       - SPRING_DATASOURCE_USERNAME=ADMIN
       - SPRING_DATASOURCE_PASSWORD=Drkarmy3502+
+
+  # --- Microservicio de Resultados ---
+  microservicio-resultados:
+    build: ./microservicio-resultados
+    container_name: api-resultados
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./microservicio-resultados/WALLET:/app/wallet
+    environment:
+      - SERVER_PORT=8082
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@laboratoriofs3_high?TNS_ADMIN=/app/wallet
+      - SPRING_DATASOURCE_USERNAME=ADMIN
+      - SPRING_DATASOURCE_PASSWORD=Drkarmy3502+
