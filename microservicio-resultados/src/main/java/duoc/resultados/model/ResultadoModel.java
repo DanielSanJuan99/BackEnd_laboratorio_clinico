@@ -1,11 +1,15 @@
 package duoc.resultados.model;
 
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import java.time.LocalDate;
 
 @Data
 public class ResultadoModel {
+    @Id
+    @Positive(message = "El id debe ser un número positivo")
     private Long id;
     
     @NotNull
@@ -24,6 +28,6 @@ public class ResultadoModel {
     private Long tipoParametroId;
     @NotNull
     private Long unidadMedidaId;
-    
+    @NotNull
     private Long usuarioId;
 }

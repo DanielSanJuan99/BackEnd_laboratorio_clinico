@@ -2,63 +2,99 @@ package duoc.resultados.service;
 
 import duoc.resultados.entity.*;
 import duoc.resultados.model.ResultadoModel;
-import duoc.resultados.repository.*;
+import duoc.resultados.repository.ResultadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ResultadoService {
 
-    @Autowired private ResultadoRepository resultadoRepository;
-    @Autowired private TipoExamenRepository tipoExamenRepository;
-    @Autowired private TipoParametroRepository tipoParametroRepository;
-    @Autowired private UnidadMedidaRepository unidadMedidaRepository;
+    @Autowired 
+    private ResultadoRepository resultadoRepository;
 
-    public List<Resultado> listarTodos() {
+    public List<Resultado> listarResultados() {
         return resultadoRepository.findAll();
     }
     
-    public Resultado obtenerPorId(Long id) {
-        return resultadoRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Resultado no encontrado con ID: " + id));
+    public Optional<Resultado> obtenerPorId(Long id) {
+        return resultadoRepository.findById(id);
     }
 
-    public List<Resultado> listarPorPaciente(Long usuarioId) {
+    public List<Resultado> obtenerPorUsuario(Long usuarioId) {
         return resultadoRepository.findByUsuarioId(usuarioId);
     }
 
-    public Resultado guardarResultado(ResultadoModel model) {
+    public Resultado guardarResultado(ResultadoModel modelo) {
         Resultado resultado = new Resultado();
-        
-        // Si viene ID, es una edición
-        if (model.getId() != null) {
-            resultado = obtenerPorId(model.getId());
-        }
 
         // Mapeo de campos simples
-        resultado.setValorResultado(model.getValorResultado());
-        resultado.setValorRefMin(model.getValorRefMin());
-        resultado.setValorRefMax(model.getValorRefMax());
-        resultado.setObservacion(model.getObservacion());
-        resultado.setFechaExamen(model.getFechaExamen());
-        resultado.setUsuarioId(model.getUsuarioId());
-        resultado.setLaboratorioId(model.getLaboratorioId());
+        resultado.setValorResultado(modelo.getValorResultado());
+        resultado.setValorRefMin(modelo.getValorRefMin());
+        resultado.setValorRefMax(modelo.getValorRefMax());
+        resultado.setObservacion(modelo.getObservacion());
+        resultado.setFechaExamen(modelo.getFechaExamen());
+        resultado.setUsuarioId(modelo.getUsuarioId());
+        resultado.setLaboratorioId(modelo.getLaboratorioId());
 
-        TipoExamen te = tipoExamenRepository.findById(model.getTipoExamenId())
-            .orElseThrow(() -> new EntityNotFoundException("Tipo Examen inválido"));
-        resultado.setTipoExamen(te);
+        if (modelo.getTipoExamenId() != null) {
+            TipoExamen te = new TipoExamen();
+            te.setId(modelo.getTipoExamenId());
+            resultado.setTipoExamen(te);
+        }
 
-        TipoParametro tp = tipoParametroRepository.findById(model.getTipoParametroId())
-            .orElseThrow(() -> new EntityNotFoundException("Tipo Parámetro inválido"));
-        resultado.setTipoParametro(tp);
+        if (modelo.getTipoParametroId() != null) {
+            TipoParametro tp = new TipoParametro();
+            tp.setId(modelo.getTipoParametroId());
+            resultado.setTipoParametro(tp);
+        }
 
-        UnidadMedida um = unidadMedidaRepository.findById(model.getUnidadMedidaId())
-            .orElseThrow(() -> new EntityNotFoundException("Unidad Medida inválida"));
-        resultado.setUnidadMedida(um);
+        if (modelo.getUnidadMedidaId() != null) {
+            UnidadMedida um = new UnidadMedida();
+            um.setId(modelo.getUnidadMedidaId());
+            resultado.setUnidadMedida(um);
+        }
 
         return resultadoRepository.save(resultado);
+    }
+
+    public Resultado actualizarResultado(Long id, ResultadoModel modelo) {
+        Optional<Resultado> resultadoExistente = resultadoRepository.findById(id);
+
+        if (resultadoExistente.isPresent()) {
+            Resultado resultado = resultadoExistente.get();
+
+            resultado.setValorResultado(modelo.getValorResultado());
+            resultado.setValorRefMin(modelo.getValorRefMin());
+            resultado.setValorRefMax(modelo.getValorRefMax());
+            resultado.setObservacion(modelo.getObservacion());
+            resultado.setFechaExamen(modelo.getFechaExamen());
+            resultado.setLaboratorioId(modelo.getLaboratorioId());
+            resultado.setUsuarioId(modelo.getUsuarioId());
+
+            if (modelo.getTipoExamenId() != null) {
+                TipoExamen te = new TipoExamen();
+                te.setId(modelo.getTipoExamenId());
+                resultado.setTipoExamen(te);
+            }
+
+            if (modelo.getTipoParametroId() != null) {
+                TipoParametro tp = new TipoParametro();
+                tp.setId(modelo.getTipoParametroId());
+                resultado.setTipoParametro(tp);
+            }
+
+            if (modelo.getUnidadMedidaId() != null) {
+                UnidadMedida um = new UnidadMedida();
+                um.setId(modelo.getUnidadMedidaId());
+                resultado.setUnidadMedida(um);
+            }
+
+            return resultadoRepository.save(resultado);
+        }
+        return null;
     }
 
     public void eliminarResultado(Long id) {
