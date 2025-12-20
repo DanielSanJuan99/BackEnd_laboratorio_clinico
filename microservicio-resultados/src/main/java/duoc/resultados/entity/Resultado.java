@@ -1,17 +1,21 @@
 package duoc.resultados.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "resultados")
 public class Resultado {
-    // TODO: REVISAR SEQUENCE GENERATOR
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "resultados_seq") 
-    @SequenceGenerator(name = "resultados_seq", sequenceName = "SEQ_RESULTADOS", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "resultados_id_seq") 
+    @SequenceGenerator(name = "resultados_id_seq", sequenceName = "SEQ_RESULTADOS", allocationSize = 1)
     private Long id;
 
     @Column(name = "valor_resultado")
@@ -49,7 +53,8 @@ public class Resultado {
     @JoinColumn(name = "unidad_medida_id")
     private UnidadMedida unidadMedida;
     
-    // TODO: GENERAR FK EN BD ENTRE USUARIO Y RESULTADO
+    // Relación Usuario
+    @ManyToOne
     @Column(name = "usuarios_id") 
     private Long usuarioId; 
 }
